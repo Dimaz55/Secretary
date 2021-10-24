@@ -29,9 +29,9 @@ directories = {
 
 
 def menu():
-    """
+    '''
     Вывод доступных команд
-    """
+    '''
     print('Доступные команды:')
     print(' p - вывод владельца по номеру документа')
     print(' s - вывод номера полки по номеру документа')
@@ -45,9 +45,9 @@ def menu():
 
 
 def list_all_docs(docs):
-    """
+    '''
     Вывод всех документов из списка
-    """
+    '''
     print('Список всех документов:')
     print(''.ljust(55, '-'))
     print('Тип'.ljust(15), '| Номер'.ljust(17), '| Владелец')
@@ -59,9 +59,9 @@ def list_all_docs(docs):
 
 
 def print_owner_by_doc(docs):
-    """
+    '''
     Вывод владельца документа по номеру
-    """
+    '''
     doc_num = input('Введите номер документа: ')
     if not valid_doc(doc_num, docs):
         return
@@ -72,9 +72,9 @@ def print_owner_by_doc(docs):
 
 
 def print_shelf_num_by_doc(docs, dirs):
-    """
+    '''
     Вывод номера полки с нужным документом
-    """
+    '''
     doc_num = input('Введите номер документа: ')
     if not valid_doc(doc_num, docs):
         return
@@ -85,9 +85,9 @@ def print_shelf_num_by_doc(docs, dirs):
 
 
 def add_new_doc(docs, dirs):
-    """
+    '''
     Добавление нового документа в базу docs и на перечень полок dirs
-    """
+    '''
     print('Добавление нового документа')
     doc_num = input('Введите номер: ')
     doc_type = input('Введите тип: ')
@@ -107,9 +107,10 @@ def add_new_doc(docs, dirs):
 
 
 def change_shelf(docs, dirs):
-    """
+    '''
     Перемещение документа на другую полку
-    """
+    '''
+    doc_exist = False
     max_shelf = max(dirs)
 
     print('\nПеремещение документа на новую полку')
@@ -133,9 +134,9 @@ def change_shelf(docs, dirs):
 
 
 def delete_doc(docs, dirs):
-    """
+    '''
     Удаляет документ из каталога docs и стеллажа dirs
-    """
+    '''
     print('Удаление документа:')
     doc_num = input('Введите номер документа: ')
     if not valid_doc(doc_num, docs):
@@ -150,9 +151,9 @@ def delete_doc(docs, dirs):
 
 
 def add_shelf(dirs):
-    """
+    '''
     Добавление полок на стеллаж dirs
-    """
+    '''
     new_shelf = input("Введите номер новой полки: ")
     if new_shelf in dirs.keys():
         print("Такая полка уже существует!\n")
@@ -161,17 +162,17 @@ def add_shelf(dirs):
 
 
 def show_shelves(dirs):
-    """
+    '''
     Показывает содержимое полок
-    """
+    '''
     for num, docs in dirs.items():
         print(f'{num}: {", ".join(docs)}')
 
 
 def valid_doc(doc_num, docs):
-    """
+    '''
     Проверка существования документа с номером doc_num в каталоге docs
-    """
+    '''
     for doc in docs:
         if doc_num == doc['number']:
             return True
