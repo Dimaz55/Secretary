@@ -46,6 +46,7 @@ def menu():
 
 def list_all_docs(docs):
     '''
+    l
     Вывод всех документов из списка
     '''
     print('Список всех документов:')
@@ -60,36 +61,37 @@ def list_all_docs(docs):
 
 def print_owner_by_doc(docs):
     '''
+    p
     Вывод владельца документа по номеру
     '''
-    doc_num = input('Введите номер документа: ')
-    if not valid_doc(doc_num, docs):
-        return
-
-    for doc in docs:
-        if doc_num == doc['number']:
-            print(f"\nВладелец документа №{doc['number']}: {doc['name']}\n")
+    doc_num = input_doc(docs, False)
+    if doc_num:
+        for doc in docs:
+            if doc_num == doc['number']:
+                print(f"\nВладелец документа №{doc['number']}: {doc['name']}\n")
 
 
 def print_shelf_num_by_doc(docs, dirs):
     '''
+    s
     Вывод номера полки с нужным документом
     '''
-    doc_num = input('Введите номер документа: ')
-    if not valid_doc(doc_num, docs):
-        return
-
-    for shelf, docs in dirs.items():
-        if doc_num in docs:
-            print(f"\nДокумент {doc_num} хранится на полке №{shelf}\n")
+    doc_num = input_doc(docs,False)
+    if doc_num:
+        for shelf, docs in dirs.items():
+            if doc_num in docs:
+                print(f"Документ {doc_num} хранится на полке №{shelf}\n")
 
 
 def add_new_doc(docs, dirs):
     '''
+    a
     Добавление нового документа в базу docs и на перечень полок dirs
     '''
     print('Добавление нового документа')
-    doc_num = input('Введите номер: ')
+    doc_num = None
+    while doc_num is None:
+        doc_num = input_doc(docs, True)
     doc_type = input('Введите тип: ')
     doc_owner = input('Введите имя владельца: ')
     max_shelf = max(dirs)
@@ -108,50 +110,50 @@ def add_new_doc(docs, dirs):
 
 def change_shelf(docs, dirs):
     '''
+    m
     Перемещение документа на другую полку
     '''
-    doc_exist = False
     max_shelf = max(dirs)
 
     print('\nПеремещение документа на новую полку')
-    doc_num = input('Введите номер документа: ')
-    if not valid_doc(doc_num, docs):
-        return
-    for s_num, docs in dirs.items():
-        if doc_num in docs:
-            docs.remove(doc_num)
+    doc_num = input_doc(docs, False)
+    if doc_num:
+        for s_num, docs in dirs.items():
+            if doc_num in docs:
+                docs.remove(doc_num)
 
-    while True:
-        print(f"Введите номер новой полки (1 - {max_shelf}): ", end='')
-        shelf = input()
-        if shelf not in dirs.keys():
-            print('Полка не существует!')
-        else:
-            break
+        while True:
+            print(f"Введите номер новой полки (1 - {max_shelf}): ", end='')
+            shelf = input()
+            if shelf not in dirs.keys():
+                print('Полка не существует!')
+            else:
+                break
 
-    dirs[shelf].append(doc_num)
-    print(f"\nТеперь документ {doc_num} хранится на полке № {shelf}\n")
+        dirs[shelf].append(doc_num)
+        print(f"\nТеперь документ {doc_num} хранится на полке № {shelf}\n")
 
 
 def delete_doc(docs, dirs):
     '''
+    d
     Удаляет документ из каталога docs и стеллажа dirs
     '''
     print('Удаление документа:')
-    doc_num = input('Введите номер документа: ')
-    if not valid_doc(doc_num, docs):
-        return
-    for doc in docs:
-        if doc_num == doc['number']:
-            docs.remove(doc)
-            for s_num, shelf in dirs.items():
-                if doc_num in shelf:
-                    shelf.remove(doc_num)
-                    print('Документ удалён!\n')
+    doc_num = input_doc(docs, False)
+    if doc_num:
+        for doc in docs:
+            if doc_num == doc['number']:
+                docs.remove(doc)
+                for s_num, shelf in dirs.items():
+                    if doc_num in shelf:
+                        shelf.remove(doc_num)
+                        print(f'Документ {doc_num} c полки №{s_num} удалён.\n')
 
 
 def add_shelf(dirs):
     '''
+    as
     Добавление полок на стеллаж dirs
     '''
     new_shelf = input("Введите номер новой полки: ")
@@ -163,22 +165,33 @@ def add_shelf(dirs):
 
 def show_shelves(dirs):
     '''
+    ss
     Показывает содержимое полок
     '''
     for num, docs in dirs.items():
         print(f'{num}: {", ".join(docs)}')
 
 
-def valid_doc(doc_num, docs):
+def input_doc(docs, exist):
     '''
-    Проверка существования документа с номером doc_num в каталоге docs
+    Ввод номера документа и проверка его существования с номером в каталоге docs.
+    exist = True проверяет отсутствие в базе для создания нового возвращает None
+            False проверяет существование в базе и возвращает номер
     '''
-    for doc in docs:
-        if doc_num == doc['number']:
-            return True
-
-    print('\nДокумент с таким номером не существует!\n')
-    return False
+    doc_num = input('Введите номер документа: ')
+    print()
+    if exist == True:
+        for doc in docs:
+            if doc_num == doc['number']:
+                print('Документ с таким номером уже существует!\n')
+                return None
+        return doc_num
+    else:
+        for doc in docs:
+            if doc_num == doc['number']:
+                return doc_num
+        print('Документ с таким номером не существует!\n')
+        return None
 
 
 def start():
