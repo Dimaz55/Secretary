@@ -105,7 +105,7 @@ def add_new_doc(docs, dirs):
 
     docs.append({'type': doc_type, 'number': doc_num, 'name': doc_owner})
     dirs[shelf].append(doc_num)
-    print(f'\nДокумент №{doc_num} добавлен на полку №{shelf}\n')
+    print(f'\nДокумент №{doc_num} создан и добавлен на полку №{shelf}\n')
 
 
 def change_shelf(docs, dirs):
